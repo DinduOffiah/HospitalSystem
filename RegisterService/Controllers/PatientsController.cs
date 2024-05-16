@@ -6,7 +6,7 @@ using RegisterService.Models;
 namespace RegisterService.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PatientsController : ControllerBase
     {
         private readonly IPatientService _patientService;
@@ -16,7 +16,15 @@ namespace RegisterService.Controllers
             _patientService = patientService;
         }
 
-        [HttpPost]
+        [HttpGet("GetAllPatients")]
+        public async Task<IActionResult> GetAllPatients()
+        {
+            var patients = await _patientService.GetAllPatientsAsync();
+
+            return Ok(patients);
+        }
+
+        [HttpPost("RegisterPatient")]
         public async Task<IActionResult> RegisterPatient([FromBody] Patient patient)
         {
             var registeredPatient = await _patientService.RegisterPatientAsync(patient);
@@ -25,7 +33,7 @@ namespace RegisterService.Controllers
             return CreatedAtAction(nameof(GetPatient), new { id = registeredPatient.Id }, registeredPatient);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetPatient/{id}")]
         public async Task<IActionResult> GetPatient(Guid id)
         {
             var patient = await _patientService.GetPatientAsync(id);
@@ -36,14 +44,6 @@ namespace RegisterService.Controllers
             }
 
             return Ok(patient);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllPatients()
-        {
-            var patients = await _patientService.GetAllPatientsAsync();
-
-            return Ok(patients);
         }
     }
 
