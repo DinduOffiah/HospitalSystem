@@ -38,6 +38,11 @@ namespace RegisterService.Controllers
         {
             var registeredPatient = await _patientService.RegisterPatientAsync(patient);
 
+            using(var client  = new HttpClient())
+            {
+                client.BaseAddress = new Uri("");
+            }
+
             // Return a 201 Created status code and the registered patient
             return CreatedAtAction(nameof(GetPatient), new { id = registeredPatient.Id }, registeredPatient);
         }
