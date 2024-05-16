@@ -16,6 +16,7 @@ namespace RegisterService.Services
 
         public async Task<Patient> RegisterPatientAsync(Patient patient)
         {
+            patient.Id = Guid.NewGuid();
             _context.Patients.Add(patient);
             await _context.SaveChangesAsync();
 

@@ -21,7 +21,16 @@ namespace RegisterService.Controllers
         {
             var patients = await _patientService.GetAllPatientsAsync();
 
-            return Ok(patients);
+            if(patients != null)
+            {
+                return Ok(patients);
+            }
+            else
+            {
+                return NotFound("No patient found.");
+            }
+
+           
         }
 
         [HttpPost("RegisterPatient")]
