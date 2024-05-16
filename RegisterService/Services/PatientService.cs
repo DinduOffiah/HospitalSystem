@@ -1,4 +1,5 @@
 ﻿using AppDbContext.Data;
+using Microsoft.EntityFrameworkCore;
 using RegisterService.Interface;
 using RegisterService.Models;
 
@@ -15,11 +16,21 @@ namespace RegisterService.Services
 
         public async Task<Patient> RegisterPatientAsync(Patient patient)
         {
-            // Add the patient to the database
             _context.Patients.Add(patient);
             await _context.SaveChangesAsync();
 
             return patient;
         }
+
+        public async Task<Patient> GetPatientAsync(Guid id)
+        {
+            return await _context.Patients.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Patient>> GetAllPatientsAsync()
+        {
+            return await _context.Patients.ToListAsync();
+        }
     }
+
 }
