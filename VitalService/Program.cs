@@ -1,3 +1,5 @@
+using AppDbContext.Data;
+using Microsoft.EntityFrameworkCore;
 using RegisterService.Interface;
 using RegisterService.Services;
 
@@ -11,6 +13,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<VitalDbContext>(options => options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 

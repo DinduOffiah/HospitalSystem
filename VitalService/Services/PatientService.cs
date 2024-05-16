@@ -7,9 +7,9 @@ namespace RegisterService.Services
 {
     public class PatientService : IPatientService
     {
-        private readonly HospitalContext _context;
+        private readonly VitalDbContext _context;
 
-        public PatientService(HospitalContext context)
+        public PatientService(VitalDbContext context)
         {
             _context = context;
         }
