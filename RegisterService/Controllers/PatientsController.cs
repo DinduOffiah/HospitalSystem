@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using RegisterService.Interface;
 using RegisterService.Models;
+using System.Text;
+using System.Text.Json;
 
 namespace RegisterService.Controllers
 {
@@ -38,10 +40,27 @@ namespace RegisterService.Controllers
         {
             var registeredPatient = await _patientService.RegisterPatientAsync(patient);
 
-            using(var client  = new HttpClient())
+            // Create a new HttpClient
+            using (var client  = new HttpClient())
             {
-                client.BaseAddress = new Uri("");
+                // Set the URL of the VitalService
+                client.BaseAddress = new Uri("http://localhost:5196");
+
+                // Serialize the registered patient to JSON
+                var json = JsonSerializer.Serialize(registeredPatient);
+
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                // Make a POST request to the VitalService
+                var response = await client.PostAsync("/Patients", data);
+
+                // Check if the request was successful
+                if (!response.IsSuccessStatusCode)
+                {
+                    return StatusCode((int)response.StatusCode);
+                }
             }
+
 
             // Return a 201 Created status code and the registered patient
             return CreatedAtAction(nameof(GetPatient), new { id = registeredPatient.Id }, registeredPatient);
