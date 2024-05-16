@@ -1,0 +1,26 @@
+﻿@model BlogApplication.Models.Article
+
+<div>
+    <h4>Article</h4>
+    <hr />
+    <dl class="row">
+        <dd class="col-sm-10 font-weight-bold h4">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dd>
+            @if (Model.Image != null)
+            {
+                <img class="" src="@Model.Image" alt="Image" style="max-width: 300px" />
+            }
+        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Story)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-controller="Home" asp-action="Index">Back to List</a>
+</div>

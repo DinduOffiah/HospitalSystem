@@ -1,0 +1,63 @@
+﻿@model Test.Models.Student
+
+<h4>Student</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Photo">Select Image:</label>
+                <input type="file" name="file" id="file" class="form-control" onchange="previewImage(event)" />
+                @if (Model.Photo != null && Model.Photo.Length > 0)
+                {
+                    <img id="imagePreview" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)" style="width: 100px; height: 100px;" />
+                }
+                else
+                {
+                    <img id="imagePreview" style="width: 100px; height: 100px;" />
+                }
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            const imgElement = document.getElementById("imagePreview");
+
+            reader.onload = function (e) {
+                imgElement.src = e.target.result;
+                imgElement.style.display = "Block";
+            };
+
+            reader.readAsDataURL(file);
+        }
+    </script>
+}
+

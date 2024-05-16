@@ -1,0 +1,38 @@
+﻿ @model IEnumerable<BlogApplication.Models.Article>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <form class="search-container">
+        <div class="wrap">
+            <div class="search">
+                <input type="text" name="query" class="searchTerm" placeholder="Search news...">
+                <button type="submit" class="searchButton">
+                    <i class="fa fa-search"></i>
+                </button>
+                <span><i>You can search by title or date</i></span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="product-container">
+    @foreach (var item in Model.Take(15))
+    {
+        if (item != null)
+        {
+            <div class="product-card">
+                <div class="product-tumb">
+                    <img class="" src="@item.Image" alt="" style="max-width: 250px" />
+                </div>
+                <div class="product-details">
+                    <h4>@Html.DisplayFor(modelItem => item.Title)</h4>
+                    <h6>@Html.DisplayFor(modelItem => item.Date)</h6>
+                    <a asp-controller="Articles" asp-action="Details" asp-route-id="@item.Id">Read More</a>
+                </div>
+            </div>
+        }
+    }
+</div>
