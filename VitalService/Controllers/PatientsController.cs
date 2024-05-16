@@ -6,7 +6,7 @@ using RegisterService.Models;
 namespace VitalService.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PatientsController : ControllerBase
     {
         private readonly IPatientService _patientService;

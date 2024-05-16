@@ -8,10 +8,13 @@ namespace RegisterService.Services
     public class PatientService : IPatientService
     {
         private readonly RegisterDbContext _context;
+        private readonly INotificationService _notificationService;
 
-        public PatientService(RegisterDbContext context)
+
+        public PatientService(RegisterDbContext context, INotificationService notificationService)
         {
             _context = context;
+            _notificationService = notificationService;
         }
 
         public async Task<Patient> RegisterPatientAsync(Patient patient)
@@ -19,6 +22,9 @@ namespace RegisterService.Services
             patient.Id = Guid.NewGuid();
             _context.Patients.Add(patient);
             await _context.SaveChangesAsync();
+
+            // Notify VitalService about new patient
+            await _notificationService.NotifyNewPatientAsync(patient);
 
             return patient;
         }

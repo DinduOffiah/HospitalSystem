@@ -40,26 +40,26 @@ namespace RegisterService.Controllers
         {
             var registeredPatient = await _patientService.RegisterPatientAsync(patient);
 
-            // Create a new HttpClient
-            using (var client  = new HttpClient())
-            {
-                // Set the URL of the VitalService
-                client.BaseAddress = new Uri("http://localhost:5196");
+            //// Create a new HttpClient
+            //using (var client  = new HttpClient())
+            //{
+            //    // Set the URL of the VitalService
+            //    client.BaseAddress = new Uri("http://localhost:5196");
 
-                // Serialize the registered patient to JSON
-                var json = JsonSerializer.Serialize(registeredPatient);
+            //    // Serialize the registered patient to JSON
+            //    var json = JsonSerializer.Serialize(registeredPatient);
 
-                var data = new StringContent(json, Encoding.UTF8, "application/json");
+            //    var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-                // Make a POST request to the VitalService
-                var response = await client.PostAsync("/Patients", data);
+            //    // Make a POST request to the VitalService
+            //    var response = await client.PostAsync("/Patients", data);
 
-                // Check if the request was successful
-                if (!response.IsSuccessStatusCode)
-                {
-                    return StatusCode((int)response.StatusCode);
-                }
-            }
+            //    // Check if the request was successful
+            //    if (!response.IsSuccessStatusCode)
+            //    {
+            //        return StatusCode((int)response.StatusCode);
+            //    }
+            //}
 
 
             // Return a 201 Created status code and the registered patient
