@@ -18,8 +18,7 @@ namespace RegisterService.Services
             var json = JsonSerializer.Serialize(patient);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            // Send HTTP POST request to VitalService
-            var response = await _httpClient.PostAsync("http://vitalservice/api/patients", content);
+            var response = await _httpClient.PostAsync("", content);
             response.EnsureSuccessStatusCode();
         }
     }
