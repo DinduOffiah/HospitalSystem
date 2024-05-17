@@ -7,6 +7,7 @@ namespace RegisterService.Interface
         Task<IEnumerable<Patient>> GetAllPatientsAsync();
         Task<Patient> GetPatientAsync(Guid id);
         Task<Patient> UpdatePatientAsync(Patient patient);
+        Task<Patient> CreatePatientAsync(Patient patient);
     }
 
 }

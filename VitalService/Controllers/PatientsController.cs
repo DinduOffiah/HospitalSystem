@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RegisterService.Interface;
 using RegisterService.Models;
 
@@ -49,6 +50,15 @@ namespace VitalService.Controllers
 
             return Ok(updatedPatient);
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddPatient([FromBody] Patient patient)
+        {
+            await _patientService.CreatePatientAsync(patient);
+            return Ok("Patient added successfully");
+        }
+
     }
 
 }

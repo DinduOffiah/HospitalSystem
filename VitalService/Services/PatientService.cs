@@ -31,6 +31,14 @@ namespace RegisterService.Services
 
             return patient;
         }
+
+        public async Task<Patient> CreatePatientAsync(Patient patient)
+        {
+            _context.Patients.Add(patient);
+            await _context.SaveChangesAsync();
+
+            return patient;
+        }
     }
 
 

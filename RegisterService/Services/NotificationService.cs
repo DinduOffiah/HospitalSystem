@@ -1,6 +1,8 @@
 ﻿using RegisterService.Models;
 using System.Text.Json;
 using System.Text;
+using Serilog;
+using Newtonsoft.Json;
 
 namespace RegisterService.Services
 {
@@ -15,11 +17,33 @@ namespace RegisterService.Services
 
         public async Task NotifyNewPatientAsync(Patient patient)
         {
-            var json = JsonSerializer.Serialize(patient);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            //using (var client = new HttpClient())
+            //{
+            //    var url = "http://localhost:5196/api/Patients"; // Ensure this is the correct URL
+            //    var content = new StringContent(JsonConvert.SerializeObject(patient), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("", content);
-            response.EnsureSuccessStatusCode();
+            //    try
+            //    {
+            //        var response = await client.PostAsync(url, content);
+            //        if (!response.IsSuccessStatusCode)
+            //        {
+            //            var responseBody = await response.Content.ReadAsStringAsync();
+            //            Log.Error("Failed to notify new patient. Status Code: {StatusCode}, Response: {Response}", response.StatusCode, responseBody);
+            //            response.EnsureSuccessStatusCode(); // This will throw an exception if the status code is not successful
+            //        }
+            //    }
+            //    catch (HttpRequestException ex)
+            //    {
+            //        Log.Error(ex, "An error occurred while sending the notification request.");
+            //        throw; // Optionally, handle or rethrow the exception
+            //    }
+            //}
+
+            // Notify VitalService about the new patient
+            var json = JsonConvert.SerializeObject(patient);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            await _httpClient.PostAsync("http://localhost:5196/api/Patients", data);
         }
+
     }
 }

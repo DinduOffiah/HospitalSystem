@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RegisterService.DTOs;
 using RegisterService.Interface;
 using RegisterService.Models;
+using Serilog;
 using System.Text;
 using System.Text.Json;
 
@@ -12,10 +14,12 @@ namespace RegisterService.Controllers
     public class PatientsController : ControllerBase
     {
         private readonly IPatientService _patientService;
+        private readonly ILogger<PatientsController> _logger;
 
-        public PatientsController(IPatientService patientService)
+        public PatientsController(IPatientService patientService, ILogger<PatientsController> logger)
         {
             _patientService = patientService;
+            _logger = logger;
         }
 
         [HttpGet("GetAllPatients")]
@@ -35,11 +39,25 @@ namespace RegisterService.Controllers
            
         }
 
-        [HttpPost("RegisterPatient")]
-        public async Task<IActionResult> RegisterPatient([FromBody] Patient patient)
+       [HttpPost("register")]
+        public async Task<IActionResult> RegisterPatient([FromBody] PatientDTO patientDto)
         {
-            var registeredPatient = await _patientService.RegisterPatientAsync(patient);
-            return CreatedAtAction(nameof(GetPatient), new { id = registeredPatient.Id }, registeredPatient);
+            var patient = new Patient
+            {
+                Name = patientDto.Name,
+                DateOfBirth = patientDto.DateOfBirth
+            };
+
+            try
+            {
+                await _patientService.RegisterPatientAsync(patient);
+                return Ok(patient);
+            }
+            catch (HttpRequestException ex)
+            {
+                Log.Error(ex, "An error occurred during patient registration");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
 
