@@ -21,8 +21,8 @@ builder.Services.AddDbContext<RegisterDbContext>(options => options.UseSqlServer
 
 builder.Services.AddHttpClient<INotificationService, NotificationService>(client =>
 {
-    client.BaseAddress = new Uri("http://vitalservice");
-    // Additional configuration if needed...
+    var baseAddress = builder.Configuration.GetSection("Services")["VitalService"];
+    client.BaseAddress = new Uri(baseAddress);
 });
 
 var app = builder.Build();
