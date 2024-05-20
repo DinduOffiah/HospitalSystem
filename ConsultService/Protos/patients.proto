@@ -1,3 +1,16 @@
 syntax = "proto3";
 
 option csharp_namespace = "ConsultService.Protos";
+
+service Patient{
+	rpc UpdatePatient (PatientRequest) returns (PatientResponse);
+}
+
+message PatientRequest {
+	int32 id = 1;
+	string name = 2;
+}
+
+message PatientResponse{
+	string message = 1;
+}
