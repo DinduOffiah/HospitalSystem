@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterService", "Register
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VitalService", "VitalService\VitalService.csproj", "{82576B28-AF98-44E8-BD17-1C385E122720}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsultService", "ConsultService\ConsultService.csproj", "{ED680AB0-9FF9-4E47-997C-B7720FB20604}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsultService", "ConsultService\ConsultService.csproj", "{ED680AB0-9FF9-4E47-997C-B7720FB20604}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
