@@ -11,7 +11,7 @@ namespace ConsultService.Services
         {
             _context = context;
         }
-        public async Task<Doctor> RegisterPatientAsync(Doctor doctor)
+        public async Task<Doctor> AddDoctorAsync(Doctor doctor)
         {
             _context.Doctors.Add(doctor);
             await _context.SaveChangesAsync();

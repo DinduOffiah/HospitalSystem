@@ -4,6 +4,6 @@ namespace ConsultService.Services
 {
     public interface IDoctorService
     {
-        Task<Doctor> RegisterPatientAsync(Doctor doctor);
+        Task<Doctor> AddDoctorAsync(Doctor doctor);
     }
 }
