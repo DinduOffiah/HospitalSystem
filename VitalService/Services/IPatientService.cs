@@ -1,4 +1,4 @@
-﻿using RegisterService.Models;
+﻿using VitalService.Models;
 
 namespace RegisterService.Interface
 {

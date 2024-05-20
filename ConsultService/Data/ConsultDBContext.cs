@@ -1,5 +1,7 @@
 ﻿using ConsultService.Models;
+using ConsultService.Protos;
 using Microsoft.EntityFrameworkCore;
+using RegisterService.Models;
 using System.Collections.Generic;
 
 namespace ConsultService.Data
@@ -11,5 +13,6 @@ namespace ConsultService.Data
         }
 
         public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Patient> Patients { get; set; }
     }
 }

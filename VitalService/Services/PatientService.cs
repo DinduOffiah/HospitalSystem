@@ -1,7 +1,7 @@
 ﻿using AppDbContext.Data;
 using Microsoft.EntityFrameworkCore;
 using RegisterService.Interface;
-using RegisterService.Models;
+using VitalService.Models;
 
 namespace RegisterService.Services
 {

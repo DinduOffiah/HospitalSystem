@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RegisterService.Interface;
-using RegisterService.Models;
+using VitalService.Models;
 
 namespace VitalService.Controllers
 {

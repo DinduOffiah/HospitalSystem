@@ -27,8 +27,4 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
-
-	<ItemGroup>
-		<protobuf Include="Protos\patients.proto" GrpcServices="Server" />
-	</ItemGroup>
 </Project>

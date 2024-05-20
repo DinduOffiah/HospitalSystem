@@ -1,4 +1,4 @@
-﻿namespace RegisterService.Models
+﻿namespace VitalService.Models
 {
     public class Patient
     {

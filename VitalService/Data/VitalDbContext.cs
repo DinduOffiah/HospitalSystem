@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RegisterService.Models;
 using System.Collections.Generic;
+using VitalService.Models;
 
 namespace AppDbContext.Data
 {
