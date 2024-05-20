@@ -1,15 +1,22 @@
-﻿using ConsultService.Models;
+﻿using ConsultService.Data;
+using ConsultService.Models;
 
 namespace ConsultService.Services
 {
-    public class DoctorService
+    public class DoctorService : IDoctorService
     {
+        private readonly ConsultDBContext _context;
+
+        public DoctorService(ConsultDBContext context)
+        {
+            _context = context;
+        }
         public async Task<Doctor> RegisterPatientAsync(Doctor doctor)
         {
-            _context.Patients.Add(patient);
+            _context.Doctors.Add(doctor);
             await _context.SaveChangesAsync();
 
-            return patient;
+            return doctor;
         }
     }
 }
