@@ -2,12 +2,15 @@ using AppDbContext.Data;
 using Microsoft.EntityFrameworkCore;
 using RegisterService.Interface;
 using RegisterService.Services;
+using VitalService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddSingleton<PatientDataClient>();
 
+builder.Services.AddGrpc();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

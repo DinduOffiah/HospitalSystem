@@ -1,7 +1,5 @@
 ﻿using ConsultService.Models;
-using ConsultService.Protos;
 using Microsoft.EntityFrameworkCore;
-using RegisterService.Models;
 using System.Collections.Generic;
 
 namespace ConsultService.Data

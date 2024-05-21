@@ -7,9 +7,9 @@ service PatientService {
 }
 
 message PatientRequest {
-    int32 id = 1;
+    string id = 1;
     string name = 2;
-    string date_of_birth = 3;
+    string dateOfBirth = 3;
 }
 
 message PatientResponse {

@@ -1,17 +1,21 @@
 ﻿using AppDbContext.Data;
+using ConsultService;
 using Microsoft.EntityFrameworkCore;
 using RegisterService.Interface;
 using VitalService.Models;
+using VitalService.Services;
 
 namespace RegisterService.Services
 {
     public class PatientService : IPatientService
     {
         private readonly VitalDbContext _context;
+        private readonly PatientDataClient _patientDataClient;
 
-        public PatientService(VitalDbContext context)
+        public PatientService(VitalDbContext context, PatientDataClient patientDataClient)
         {
             _context = context;
+            _patientDataClient = patientDataClient;
         }
 
         public async Task<IEnumerable<Patient>> GetAllPatientsAsync()
@@ -29,6 +33,15 @@ namespace RegisterService.Services
             _context.Entry(patient).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
+            var patientRequest = new PatientRequest
+            {
+                Id = patient.Id.ToString(),
+                Name = patient.Name,
+                DateOfBirth = patient.DateOfBirth.ToString("o") // Using round-trip date/time pattern for string representation
+            };
+
+            await _patientDataClient.AddPatientAsync(patientRequest);
+
             return patient;
         }
 
@@ -37,9 +50,17 @@ namespace RegisterService.Services
             _context.Patients.Add(patient);
             await _context.SaveChangesAsync();
 
+            var patientRequest = new PatientRequest
+            {
+                Id = patient.Id.ToString(),
+                Name = patient.Name,
+                DateOfBirth = patient.DateOfBirth.ToString("o")
+            };
+
+            await _patientDataClient.AddPatientAsync(patientRequest);
+
             return patient;
         }
+
     }
-
-
 }
