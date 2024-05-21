@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "ConsultService";
+
+service PatientService {
+    rpc AddPatient (PatientRequest) returns (PatientResponse);
+}
+
+message PatientRequest {
+    int32 id = 1;
+    string name = 2;
+    string date_of_birth = 3;
+}
+
+message PatientResponse {
+    string status = 1;
+}
