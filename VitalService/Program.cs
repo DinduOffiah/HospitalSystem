@@ -2,6 +2,7 @@ using AppDbContext.Data;
 using Microsoft.EntityFrameworkCore;
 using RegisterService.Interface;
 using RegisterService.Services;
+using Serilog;
 using VitalService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,14 @@ builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<VitalDbContext>(options => options.UseSqlServer(connectionString));
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 

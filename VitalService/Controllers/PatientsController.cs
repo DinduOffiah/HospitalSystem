@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Grpc.Core;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RegisterService.Interface;
@@ -11,10 +12,12 @@ namespace VitalService.Controllers
     public class PatientsController : ControllerBase
     {
         private readonly IPatientService _patientService;
+        private readonly ILogger<PatientsController> _logger;
 
-        public PatientsController(IPatientService patientService)
+        public PatientsController(IPatientService patientService, ILogger<PatientsController> logger)
         {
             _patientService = patientService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -41,14 +44,23 @@ namespace VitalService.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePatient(Guid id, [FromBody] Patient patient)
         {
-            if (id != patient.Id)
+            try
             {
-                return BadRequest();
+                _logger.LogInformation("Updating patient {PatientId}", id);
+                var result = await _patientService.UpdatePatientAsync(patient);
+                _logger.LogInformation("Patient {PatientId} updated successfully", id);
+                return Ok(result);
             }
-
-            var updatedPatient = await _patientService.UpdatePatientAsync(patient);
-
-            return Ok(updatedPatient);
+            catch (RpcException ex)
+            {
+                _logger.LogError(ex, "RpcException occurred while updating patient {PatientId}. Status: {StatusCode}, Detail: {Detail}", id, ex.StatusCode, ex.Status.Detail);
+                return StatusCode(500, "Internal server error while communicating with ConsultService.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An unexpected error occurred while updating patient {PatientId}", id);
+                return StatusCode(500, "An unexpected error occurred.");
+            }
         }
 
 

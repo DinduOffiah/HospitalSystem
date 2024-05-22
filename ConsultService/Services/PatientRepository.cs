@@ -1,23 +1,47 @@
-﻿using ConsultService.Models;
-using System.Collections.Concurrent;
+﻿using ConsultService.Data;
+using ConsultService.Models;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace ConsultService.Services
 {
     public class PatientRepository : IPatientRepository
     {
-        private readonly ConcurrentDictionary<Guid, Patient> _patients = new();
+        private readonly ConsultDBContext _context;
+        private readonly ILogger<PatientRepository> _logger;
 
-        public Task AddPatientAsync(Patient patient)
+        public PatientRepository(ConsultDBContext context, ILogger<PatientRepository> logger)
         {
-            _patients[patient.Id] = patient;
-            return Task.CompletedTask;
+            _context = context;
+            _logger = logger;
         }
 
-        public Task SaveChangesAsync()
+        public async Task AddPatientAsync(Patient patient)
         {
-            // In-memory storage, so no actual save is needed.
-            // For a real database, this method would contain save logic.
-            return Task.CompletedTask;
+            _logger.LogInformation("Adding patient {PatientId} to the database", patient.Id);
+            try
+            {
+                await _context.Patients.AddAsync(patient);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while adding patient {PatientId} to the database.", patient.Id);
+                throw;
+            }
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            _logger.LogInformation("Saving changes to the database");
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while saving changes to the database.");
+                throw;
+            }
         }
     }
 }

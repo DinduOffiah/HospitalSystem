@@ -1,12 +1,11 @@
 ﻿using Grpc.Core;
-using ConsultService.Data;
 using ConsultService.Models;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace ConsultService.Services
 {
-
     public class PatientServiceImpl : PatientService.PatientServiceBase
     {
         private readonly IPatientRepository _repository;
@@ -20,20 +19,29 @@ namespace ConsultService.Services
 
         public override async Task<PatientResponse> AddPatient(PatientRequest request, ServerCallContext context)
         {
-            _logger.LogInformation("Received a new patient: {Name}", request.Name);
-
-            var patient = new Patient
+            try
             {
-                Id = new Guid(request.Id),
-                Name = request.Name,
-                DateOfBirth = DateTime.Parse(request.DateOfBirth)
-            };
+                _logger.LogInformation("Received a new patient: {Name}", request.Name);
 
-            await _repository.AddPatientAsync(patient);
-            await _repository.SaveChangesAsync();
+                var patient = new Patient
+                {
+                    Id = new Guid(request.Id),
+                    Name = request.Name,
+                    DateOfBirth = DateTime.Parse(request.DateOfBirth)
+                };
 
-            return new PatientResponse { Status = "Patient added successfully" };
+                await _repository.AddPatientAsync(patient);
+                await _repository.SaveChangesAsync();
+
+                _logger.LogInformation("Patient {PatientId} added successfully", patient.Id);
+
+                return new PatientResponse { Status = "Patient added successfully" };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while adding patient {PatientId}", request.Id);
+                throw new RpcException(new Status(StatusCode.Internal, "Internal server error"));
+            }
         }
     }
-
 }
